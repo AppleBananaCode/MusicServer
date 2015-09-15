@@ -8,6 +8,8 @@ import simplejson
 # Create your views here.
 
 getLists = []
+getListImage = []
+getListName = []
 # 获取top歌单的详细内容
 def test(request):
     ease = NetEase()
@@ -18,11 +20,18 @@ def test(request):
 
 # 获取top歌单Id
 def getTop_playlistsId(request):
-    getlistId = []
+    getlistAll = []
+    global getLists
+    getLists = []
+    global getListName
+    getListName = []
+    global getListImage
+    getListImage = []
+
     getDict = {}
     #getDict.
     ease = NetEase()
-    s = ease.top_playlists(limit=50)
+    s = ease.top_playlists(limit=2)
     req = simplejson.dumps(s)
     getReq = simplejson.loads(req)
     print(getReq)
@@ -31,8 +40,19 @@ def getTop_playlistsId(request):
     for getid in getReq:
         global getLists
         getLists.append(getid["id"])
+        global getListName
+        getListName.append(getid["name"])
+        global getListImage
+        getListImage.append(getid["coverImgUrl"])
 
-    return HttpResponse(getLists)
+    getlistAll.append(getLists)
+    getlistAll.append(getListName)
+    getlistAll.append(getListImage)
+
+    jsonArray = simplejson.dumps(getlistAll)
+
+
+    return HttpResponse(jsonArray)
 
 
 def test3(request):
