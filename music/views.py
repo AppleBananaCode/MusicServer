@@ -11,11 +11,13 @@ getLists = []
 getListImage = []
 getListName = []
 # 获取top歌单的详细内容
-def test(request):
+def getPlayListDetail(request):
+   # getId = simplejson.loads(request.body)
+   # print(getId)
+    #id = getId["id"]
     ease = NetEase()
-    s = ease.playlist_detail('95537632')
-
-
+    s = ease.playlist_detail("106981450")
+    jsonData = simplejson.dumps(s)
     return HttpResponse(s)
 
 # 获取top歌单Id
@@ -31,7 +33,7 @@ def getTop_playlistsId(request):
     getDict = {}
     #getDict.
     ease = NetEase()
-    s = ease.top_playlists(limit=2)
+    s = ease.top_playlists(limit=50)
     req = simplejson.dumps(s)
     getReq = simplejson.loads(req)
     print(getReq)
