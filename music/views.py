@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from this import s
 
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -10,15 +11,39 @@ import simplejson
 getLists = []
 getListImage = []
 getListName = []
+
+getSongIDs = []
 # 获取top歌单的详细内容
 def getPlayListDetail(request):
-   # getId = simplejson.loads(request.body)
-   # print(getId)
-    #id = getId["id"]
+    sendJsonAll = []
+    global getSongIDs
+    getSongIDs = []
+    getSongTimes = []
+    getSongNames = []
+    getSongMp3Url = []
+    getId = simplejson.loads(request.body)
+    print(getId)
+    id = getId["id"]
     ease = NetEase()
-    s = ease.playlist_detail("106981450")
+    s = ease.playlist_detail(id)
     jsonData = simplejson.dumps(s)
-    return HttpResponse(s)
+    parjson = simplejson.loads(jsonData)
+
+    for getKeys in parjson:
+        global getSongIDs
+        getSongIDs.append(getKeys["bMusic"]["id"])
+        getSongNames.append(getKeys["bMusic"]["name"])
+        getSongTimes.append(getKeys["duration"])
+        getSongMp3Url.append(getKeys["mp3Url"])
+
+    sendJsonAll.append(getSongIDs)
+    sendJsonAll.append(getSongNames)
+    sendJsonAll.append(getSongTimes)
+    sendJsonAll.append(getSongMp3Url)
+    global getSongIDs
+    sendJsonData = simplejson.dumps(sendJsonAll)
+    print(sendJsonData)
+    return HttpResponse(sendJsonData)
 
 # 获取top歌单Id
 def getTop_playlistsId(request):
@@ -59,7 +84,7 @@ def getTop_playlistsId(request):
 
 def test3(request):
     ease = NetEase()
-    s = ease.song_detail('30590170')
-    print(getLists)
+    s = ease.song_detail('33335237')
+    print(s)
     global getLists
-    return HttpResponse(getLists)
+    return HttpResponse(s)
