@@ -29,10 +29,13 @@ def getPlayListDetail(request):
     jsonData = simplejson.dumps(s)
     parjson = simplejson.loads(jsonData)
 
+    print(parjson)
+
     for getKeys in parjson:
         global getSongIDs
         getSongIDs.append(getKeys["bMusic"]["id"])
-        getSongNames.append(getKeys["bMusic"]["name"])
+
+        getSongNames.append(getKeys["name"])
         getSongTimes.append(getKeys["duration"])
         getSongMp3Url.append(getKeys["mp3Url"])
 
@@ -84,7 +87,19 @@ def getTop_playlistsId(request):
 
 def test3(request):
     ease = NetEase()
-    s = ease.song_detail('33335237')
-    print(s)
+    s = ease.song_detail('22754251')
+    p = simplejson.dumps(s)
     global getLists
+    return HttpResponse(p)
+
+
+def test4(request):
+    ease = NetEase()
+    s = ease.playlist_detail("104596111")
+    jsonData = simplejson.dumps(s)
+    return HttpResponse(jsonData)
+
+def test5(request):
+    ease = NetEase()
+    s = ease.song_lyric("22754251")
     return HttpResponse(s)
