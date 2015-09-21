@@ -33,7 +33,7 @@ def getPlayListDetail(request):
 
     for getKeys in parjson:
         global getSongIDs
-        getSongIDs.append(getKeys["bMusic"]["id"])
+        getSongIDs.append(getKeys["id"])
 
         getSongNames.append(getKeys["name"])
         getSongTimes.append(getKeys["duration"])
@@ -99,7 +99,18 @@ def test4(request):
     jsonData = simplejson.dumps(s)
     return HttpResponse(jsonData)
 
-def test5(request):
-    ease = NetEase()
-    s = ease.song_lyric("22754251")
-    return HttpResponse(s)
+def get_lyric(request):
+
+    lyricId = simplejson.loads(request.body)
+    print(lyricId)
+
+    ids = lyricId['id']
+    print(ids)
+    s = NetEase()
+    getly = s.song_lyric(ids)
+    print(getly)
+    sendDict = dict()
+    sendDict["id"] = getly
+    sendly = simplejson.dumps(sendDict)
+
+    return HttpResponse(sendly)
