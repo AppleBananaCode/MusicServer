@@ -114,3 +114,10 @@ def get_lyric(request):
     sendly = simplejson.dumps(sendDict)
 
     return HttpResponse(sendly)
+
+# 获得热门歌手
+def getTopSinger(request):
+    ease = NetEase()
+    s = ease.top_artists(0,10)
+    jsonData = simplejson.dumps(s)
+    return HttpResponse(jsonData)
